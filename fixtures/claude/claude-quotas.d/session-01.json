@@ -1,0 +1,14 @@
+{
+  "rendered_at": "2026-10-30T09:40:10Z",
+  "measured_at": "2026-10-30T09:40:09Z",
+  "rate_limits": {
+    "five_hour": {
+      "used_percentage": 25,
+      "resets_at": "2026-10-30T13:00:00Z"
+    },
+    "seven_day": {
+      "used_percentage": 50,
+      "resets_at": "2026-11-01T20:00:00Z"
+    }
+  }
+}
