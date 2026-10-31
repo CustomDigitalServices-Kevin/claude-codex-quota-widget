@@ -1,0 +1,15 @@
+{
+  "accountId": "constructed-account",
+  "ordinaryUsageAllowed": false,
+  "rateLimits": {
+    "limitId": "codex",
+    "primary": { "usedPercent": 3, "windowDurationMins": null, "resetsAt": null },
+    "secondary": null,
+    "credits": null,
+    "planType": null,
+    "rateLimitReachedType": "workspace_owner_usage_limit_reached",
+    "spendControlReached": true
+  },
+  "rateLimitsByLimitId": null,
+  "rateLimitResetCredits": { "availableCount": 0, "credits": null }
+}
