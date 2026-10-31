@@ -12,3 +12,5 @@ Session IDs are required internally to match records. They are hidden from the d
 
 No cross-user account is bundled. Sign in personally, keep backups local, and share only synthetic reproductions. Uninstall preserves data by default; review removal options before deleting a provider profile.
 
+The Windows installer configures Claude only when its optional checkbox is selected. The native configuration helper stores integration ownership in `%LOCALAPPDATA%\QuotaWidget\claude-integration.json` and backs up existing Claude settings locally. Removal restores only its own status line when the current command still matches; all unrelated settings and later changes are retained. `--packaging-smoke` uses generated synthetic data in an explicitly chosen empty directory and skips normal user-profile discovery.
+
