@@ -6,7 +6,15 @@ Widget Windows open source sous licence MIT : quotas Claude Code et ChatGPT Code
 
 ## Installation
 
-Prérequis : Windows 11, PowerShell 7.5+, Git et SDK .NET 10 pour Windows. Depuis PowerShell 7.5+ :
+Télécharger **QuotaWidget-Setup-1.0.1-win-x64.exe** dans la [dernière release GitHub](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest), puis suivre l’assistant. Le runtime .NET est inclus : aucune compilation ni installation du SDK .NET, de Git ou de PowerShell 7 n’est nécessaire. Version prévue pour Windows 11 x64, installation pour l’utilisateur courant.
+
+L’assistant propose le démarrage à la connexion Windows. La connexion à Claude est facultative et décochée par défaut. Une barre d’état existante est conservée. L’intégration utilise Windows PowerShell 5.1, fourni avec Windows, uniquement pour lancer le producteur natif.
+
+L’installateur communautaire est actuellement non signé. Windows peut afficher un avertissement de réputation ou d’éditeur. Des empreintes SHA256 sont fournies dans la release. Ne désactiver aucune protection Windows.
+
+### Installation depuis les sources
+
+Pour les développeurs : Windows 11, PowerShell 7.5+, Git et SDK .NET 10 pour Windows. Depuis PowerShell 7.5+ :
 
 ```powershell
 git clone https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget.git
@@ -34,7 +42,9 @@ Les données restent dans le profil Windows de l’utilisateur. Le dépôt ne co
 
 ## Désinstallation
 
-Restaurer d’abord la configuration Claude avec `configure-claude.ps1 -Restore -BackupPath` et la sauvegarde imprimée lors de l’installation, puis lancer `pwsh -NoProfile -File ./uninstall.ps1`. Si aucun réglage n’existait avant installation, retirer seulement la propriété `statusLine` ajoutée, en conservant les autres réglages.
+Avec l’installateur Windows, utiliser Paramètres > Applications > Applications installées > Quota Widget > Désinstaller. Les préférences, données locales et profils Codex sont conservés. L’intégration Claude est retirée uniquement si sa commande appartient encore à cette installation. Les autres réglages et modifications ultérieures sont préservés.
+
+Avec l’ancien installateur depuis les sources, restaurer d’abord Claude avec `configure-claude.ps1 -Restore -BackupPath` et la sauvegarde imprimée, puis lancer `pwsh -NoProfile -File ./uninstall.ps1`.
 
 Projet communautaire indépendant, sans affiliation avec les fournisseurs cités.
 
