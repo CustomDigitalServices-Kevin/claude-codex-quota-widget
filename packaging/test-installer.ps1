@@ -61,15 +61,17 @@ function Invoke-Setup([string]$Path, [string]$InstallDirectory, [int]$ExpectedEx
     }
 }
 
-function Assert-Installed([string]$InstallDirectory, [string]$RegistryPath) {
+function Assert-Installed([string]$InstallDirectory, [string]$RegistryPath, [bool]$ExpectedStartup = $true) {
     foreach ($name in 'QuotaWidget.exe', 'quotas.exe', 'coreclr.dll', 'payload-manifest.json') {
         $path = Join-Path $InstallDirectory "app/$name"
         if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Installed file missing: $path" }
     }
     if (-not (Test-Path -LiteralPath $RegistryPath)) { throw "Test registry key missing: $RegistryPath" }
-    $run = Get-ItemPropertyValue -LiteralPath (Join-Path $RegistryPath 'Run') -Name QuotaWidget
+    $run = (Get-ItemProperty -LiteralPath (Join-Path $RegistryPath 'Run') -ErrorAction SilentlyContinue).QuotaWidget
     $expected = '"' + (Join-Path $InstallDirectory 'app/QuotaWidget.exe') + '"'
-    if ($run -ne $expected) { throw "Unexpected startup registration: $run" }
+    if (($ExpectedStartup -and $run -ne $expected) -or (-not $ExpectedStartup -and $run)) {
+        throw "Unexpected startup registration: $run"
+    }
 }
 
 function Copy-LegacyLayout([string]$Payload, [string]$InstallDirectory) {
@@ -155,9 +157,18 @@ $settings = Join-Path $data 'synthetic-claude/settings.json'
 $integration = Join-Path $data 'claude-integration.json'
 $registry = "HKCU:\Software\QuotaWidget\InstallerTests\$TestSuffix"
 Copy-LegacyLayout $LegacyPayload $install
+New-Item -Path (Join-Path $registry 'Run') -Force | Out-Null
+New-ItemProperty -LiteralPath (Join-Path $registry 'Run') -Name QuotaWidget -Value ('"' + (Join-Path $install 'QuotaWidget.exe') + '"') -Force | Out-Null
 [IO.Directory]::CreateDirectory((Split-Path $settings)) | Out-Null
 [IO.File]::WriteAllText($settings, '{malformed', [Text.UTF8Encoding]::new($false))
 $malformedHash = (Get-FileHash $settings -Algorithm SHA256).Hash
+$preferences = Join-Path $data 'settings.json'
+$profile = Join-Path $data 'codex-home/profile.keep'
+[IO.Directory]::CreateDirectory((Split-Path $profile)) | Out-Null
+[IO.File]::WriteAllText($preferences, '{"Theme":"Black","Visible":false}')
+[IO.File]::WriteAllText($profile, 'synthetic isolated profile sentinel')
+$preferencesHash = (Get-FileHash $preferences -Algorithm SHA256).Hash
+$profileHash = (Get-FileHash $profile -Algorithm SHA256).Hash
 
 Invoke-Setup $setups[0] $install
 Assert-Installed $install $registry; Assert-LegacyMigration $install
@@ -174,7 +185,9 @@ $lock = [IO.File]::Open($lockedPath, 'Open', 'Read', 'Read')
 try { if ((Invoke-NativeProcess $setups[0] @('/S', "/D=$install")) -eq 0) { throw 'Locked payload was replaced.' } }
 finally { $lock.Dispose() }
 Assert-Installed $install $registry
+Remove-ItemProperty -LiteralPath (Join-Path $registry 'Run') -Name QuotaWidget
 Invoke-Setup $setups[0] $install
+Assert-Installed $install $registry $false
 
 $original = '{"custom":"preserve"}'
 [IO.File]::WriteAllText($settings, $original, [Text.UTF8Encoding]::new($false))
@@ -200,6 +213,10 @@ if ($restored.custom -ne 'preserve' -or $restored.PSObject.Properties.Name -cont
     throw 'Uninstall did not restore synthetic Claude settings.'
 }
 if (-not (Test-Path (Join-Path $install 'legacy-user-file.keep'))) { throw 'Unknown legacy file was removed.' }
+if ((Get-FileHash $preferences -Algorithm SHA256).Hash -ne $preferencesHash -or
+    (Get-FileHash $profile -Algorithm SHA256).Hash -ne $profileHash) {
+    throw 'Widget preferences or isolated profile data changed.'
+}
 
 [pscustomobject]@{
     LegacyUpgrade = $true; ClaudeOff = $true; ClaudeOptInRestore = $true; LockedFileRejected = $true
