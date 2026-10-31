@@ -8,6 +8,7 @@ using System.Text.Json;
 // The three sidecars record launches (including CODEX_HOME), PIDs and received methods.
 Console.InputEncoding = new UTF8Encoding(false);
 Console.OutputEncoding = new UTF8Encoding(false);
+if (args.Length > 0 && args[0] == "--widget-lifetime") { return WidgetLifetimeHost.Run(args); }
 var scenario = Environment.GetEnvironmentVariable("QUOTAWIDGET_FAKE_SCENARIO")
     ?? throw new InvalidOperationException("A fake scenario is required.");
 File.AppendAllText(scenario + ".pids", Environment.ProcessId.ToString(CultureInfo.InvariantCulture) + "\n");
