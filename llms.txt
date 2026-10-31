@@ -3,6 +3,7 @@
 > Free MIT-licensed Windows desktop widget for Claude Code subscription usage, ChatGPT Codex quota windows, observed session details, CPU, RAM, GPU and VRAM monitoring.
 
 ## Documentation
+- [Windows installer](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest): self-contained Windows 11 x64 setup, no .NET SDK required.
 - [Overview and installation](README.md): prerequisites, setup, limitations and removal.
 - [AI installation guide](docs/AI-INSTALL.md): install and connect using each user's own local accounts.
 - [Agent instructions](AGENTS.md): real build, test and privacy constraints.
