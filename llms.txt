@@ -1,0 +1,13 @@
+# Claude Code and Codex Quota Widget
+
+> Free MIT-licensed Windows desktop widget for Claude Code subscription usage, ChatGPT Codex quota windows, observed session details, CPU, RAM, GPU and VRAM monitoring.
+
+## Documentation
+- [Overview and installation](README.md): prerequisites, setup, limitations and removal.
+- [AI installation guide](docs/AI-INSTALL.md): install and connect using each user's own local accounts.
+- [Agent instructions](AGENTS.md): real build, test and privacy constraints.
+- [French overview](README.fr.md): guide en français.
+- [Privacy](PRIVACY.md): local storage and data handling.
+
+This file is a documentation index. It does not guarantee search-engine or AI indexing.
+
