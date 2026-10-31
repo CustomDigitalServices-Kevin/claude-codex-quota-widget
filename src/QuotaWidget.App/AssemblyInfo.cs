@@ -1,0 +1,5 @@
+using System.Runtime.CompilerServices;
+using System.Windows;
+
+[assembly: InternalsVisibleTo("QuotaWidget.App.Tests")]
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
