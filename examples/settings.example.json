@@ -1,0 +1,9 @@
+{
+  "topmost": true,
+  "visible": true,
+  "cards": [
+    { "id": "claude", "visible": true, "design": "Detailed", "theme": "Dark" },
+    { "id": "codex", "visible": true, "design": "Compact", "theme": "Dark" },
+    { "id": "pc", "visible": true, "design": "Gauges", "theme": "Dark" }
+  ]
+}
