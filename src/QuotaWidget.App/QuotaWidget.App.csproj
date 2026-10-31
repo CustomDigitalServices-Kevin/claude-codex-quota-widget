@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\QuotaWidget.Core\QuotaWidget.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>QuotaWidget</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- WFO0003 targets Windows Forms apps bootstrapped by ApplicationConfiguration. This is a WPF
+         app (Windows Forms only hosts NotifyIcon) and WPF gets per-monitor DPI from app.manifest
+         only. Suppression documented at
+         https://learn.microsoft.com/dotnet/desktop/winforms/compiler-messages/wfo0003 -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+    <!-- Favor lower memory use in this small desktop process. Source:
+         https://learn.microsoft.com/dotnet/core/runtime-config/garbage-collector -->
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.GC.ConserveMemory" Value="7" />
+    <RuntimeHostConfigurationOption Include="System.GC.RegionSize" Value="1048576" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+</Project>
