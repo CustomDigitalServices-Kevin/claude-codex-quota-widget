@@ -1,58 +1,45 @@
 # Install and connect the widget with an AI assistant
 
-This is the operational guide for assistants helping a person monitor Claude Code usage, ChatGPT Codex quotas and Windows hardware consumption. Use the person's own Windows session and provider accounts. No developer profile, shared token, cloud service or paid project license is required.
+Use the person's own Windows session and provider accounts. No shared account, provider token or paid project license is included.
 
-## 1. Establish the environment
+## Install the Windows release
 
-This release is source-only. It targets Windows 11. Check PowerShell 7.5+, Git and the Windows .NET 10 SDK:
+Prefer the [latest GitHub release](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest) and its `QuotaWidget-Setup-1.0.1-win-x64.exe`. Windows 11 x64 is the supported package target. The package includes .NET: no SDK, compilation, Git, separate .NET runtime or PowerShell 7 is required.
 
-```powershell
-$PSVersionTable.PSVersion
-git --version
-dotnet --list-sdks
-dotnet --list-runtimes
-```
+Run as the ordinary Windows user. The wizard installs into `%LOCALAPPDATA%\Programs\QuotaWidget`, creates a Start menu shortcut and offers startup at sign-in. Claude integration is unchecked by default. Explain its effect before selecting it. Provider applications and personal sign-in remain separate.
 
-Expect a `10.x` SDK and `Microsoft.WindowsDesktop.App 10.x`. If missing, use the [official .NET download](https://dotnet.microsoft.com/download/dotnet/10.0) and [PowerShell instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows). Follow the user's normal software-installation policy. Do not disable endpoint protection, certificate checks or PowerShell security settings.
+The community installer is unsigned. Windows may show publisher or reputation warnings. Check the release's SHA256 checksums according to the user's software policy. Never disable endpoint protection, certificate verification or shell security settings. Do not promise a fixed click count through Windows reputation prompts.
 
-## 2. Clone and install
+Settings and the isolated Codex profile live separately in `%LOCALAPPDATA%\QuotaWidget`. Updates and uninstall preserve them. The bundled .NET runtime is updated through subsequent widget releases.
 
-Use a directory the person intends to keep; the optional Claude status line will reference this clone.
+## Claude account
 
-```powershell
-git clone https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget.git
-cd claude-codex-quota-widget
-pwsh -NoProfile -File ./install.ps1
-```
+The person needs [Claude Code installed and authenticated](https://code.claude.com/docs/en/setup). Never request passwords, tokens, `auth.json`, conversations or private settings contents.
 
-The installer builds locally, copies the application to the current user's `%LOCALAPPDATA%\Programs\QuotaWidget`, and registers that executable in the current user's Windows startup entry. It needs no system-wide widget installation. Settings and quota data are separate in `%LOCALAPPDATA%\QuotaWidget`.
-
-## 3. Claude account
-
-The person must have [Claude Code installed and authenticated](https://code.claude.com/docs/en/setup). Do not request their password, token or authentication file. Existing sign-in belongs to the person running Claude Code; the widget does not create a shared account.
-
-First preview the exact configuration:
+If integration was not selected in the installer, preview the native helper:
 
 ```powershell
-pwsh -NoProfile -File ./configure-claude.ps1
+$quotas = Join-Path $env:LOCALAPPDATA 'Programs/QuotaWidget/app/quotas.exe'
+& $quotas --configure-claude
 ```
 
-Explain that this adds a command-based status line to that person's Claude settings. Ask before applying it or replacing an existing status line. Once the person agrees:
+Explain that this adds a command-based status line to that person's Claude settings. Apply only after consent:
 
 ```powershell
-$setup = pwsh -NoProfile -File ./configure-claude.ps1 -Apply | ConvertFrom-Json
-$setup.backup_path
+& $quotas --configure-claude --apply
 ```
 
-If an existing `statusLine` causes refusal, preserve it unless the person explicitly chooses replacement. Only then add `-ReplaceExisting` to the same command. All other settings are preserved. Keep the printed backup path locally; do not upload the settings or backup.
+An existing status line is preserved by default. Only distinct replacement consent justifies adding `--replace-existing`. The helper makes a byte-exact backup, preserves unrelated properties and prints the backup path. Keep backups private. Invalid JSON and unsafe paths cause refusal.
 
-The producer receives the [official status-line JSON](https://code.claude.com/docs/en/statusline) and writes only selected local quotas and metadata. It does not make HTTP calls. Start or resume Claude Code and let a normal API response occur. Missing subscription windows stay missing. The first measurement age can be unknown until the API-duration counter changes on a later response; repeated rendering never proves a fresh quota read.
+The native producer receives [official status-line JSON](https://code.claude.com/docs/en/statusline), persists selected local quotas and metadata, and makes no HTTP request. Windows PowerShell 5.1, included in Windows 11, serves only as the shell-compatible launcher. It needs no PowerShell 7, Bash or jq installation.
+
+Start or resume Claude Code and allow a normal API response. Unsupported quota windows remain absent. Initial measurement age may be unknown until a later API-duration change. Repainting never proves a fresh quota reading.
 
 ## Codex account
 
-For passive readings, the widget discovers the current user's standard `.codex` session directory. An existing `.codex-cli` directory is also supported. If Codex has no recent session log, use it normally and wait for an event; never manufacture quota values.
+Passive readings discover the current user's standard `.codex` session directory, and `.codex-cli` when present. If no valid recent log exists, use Codex normally and wait for an event. Never manufacture quota values.
 
-Optional direct reads use `%LOCALAPPDATA%\QuotaWidget\codex-home`, separate from shared Codex authentication. If the person wants this mode, let them sign in using the [official Codex login flow](https://developers.openai.com/codex/auth):
+Optional direct reads use `%LOCALAPPDATA%\QuotaWidget\codex-home`, separate from shared authentication. If desired, the person signs in through the [official Codex flow](https://developers.openai.com/codex/auth):
 
 ```powershell
 $previousCodexHome = $env:CODEX_HOME
@@ -67,32 +54,43 @@ finally {
 }
 ```
 
-Do not copy `auth.json`, set `CODEX_HOME` globally, or sign in as a different person's account. Use the widget menu for a direct read after login. Reads are rate-limited and use the official local App Server. This reports the Codex quota windows the provider exposes, not general ChatGPT website-message consumption. A custom Codex profile outside the supported directories is not configurable in the desktop settings; the CLI accepts explicit `--codex-sessions` paths for offline readings.
+Never copy credentials, set `CODEX_HOME` globally, or sign in as another person. Use the widget's direct-read menu after login. Reads use the official local App Server and are rate-limited. This measures exposed Codex windows, not all ChatGPT website conversations. Desktop custom profile paths are not configurable; the CLI supports explicit `--codex-sessions` paths for offline readings.
 
-## 4. Verify the result
+## Verify
 
-- The installed widget runs as one current-user process and its gear opens settings.
-- CPU, RAM, GPU and VRAM update when Windows exposes their counters. A first sample or unsupported driver may be unavailable.
-- Claude usage appears after its configured producer receives provider data. Codex appears after a valid log or direct reading.
-- The plus button expands human-readable recorded metadata inside the card. Optional fields may be absent. This is not proof of a running agent.
-- Quota timestamps reflect measurements, not a fresh status-line paint.
+- The widget opens and the gear shows preferences.
+- CPU, RAM, GPU and VRAM update when Windows exposes their counters.
+- Claude appears after its producer receives data; Codex after a valid log or direct reading.
+- The plus button expands human-readable recorded metadata. Missing fields remain absent. A recently observed session is not proof of a working agent.
+- Quota ages follow measurements, not rendering time.
 
-Do not paste snapshots, session transcripts, full debug logs or authentication files into public issues. Use a synthetic reproduction. Missing data is a diagnostic state, not a reason to read arbitrary files from the person's profile.
+Do not upload snapshots, transcripts, full logs, backups or authentication files to public issues. Reproduce problems with synthetic fixtures.
 
-## 5. Configuration and removal
+## Settings and removal
 
-Use the gear for card order, visibility and design. [examples/settings.example.json](../examples/settings.example.json) contains neutral appearance choices only. The running app owns its settings file; do not overwrite it blindly.
+Use the gear for card visibility, order and design. [settings.example.json](../examples/settings.example.json) contains appearance only. Do not overwrite a running app's settings file.
 
-To undo Claude integration, use the backup path saved during setup:
+Uninstall from Windows Settings > Apps > Installed apps > Quota Widget, or its Start menu shortcut. Preferences, observations and isolated Codex authentication remain. Only its own Claude status line is restored or removed if the current command still belongs to the installation. Other settings and user-edited commands remain untouched.
+
+To undo only native Claude integration:
 
 ```powershell
-pwsh -NoProfile -File ./configure-claude.ps1 -Restore -BackupPath $setup.backup_path
-pwsh -NoProfile -File ./uninstall.ps1
+& $quotas --unconfigure-claude
 ```
 
-If `$setup.backup_path` was null because no settings file existed, remove only the added `statusLine` property, retaining any later settings. The uninstaller keeps local data and the dedicated Codex profile unless explicit data-removal options are used. Do not delete a user's profile merely to remove this widget.
+## Source installation alternative
 
-## Discovery limits
+Developers need Windows 11, Git, PowerShell 7.5+, the Windows .NET 10 SDK and Desktop Runtime. Use [official .NET downloads](https://dotnet.microsoft.com/download/dotnet/10.0) and [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows).
 
-The README, repository description and topics identify this as a free Claude Code usage monitor and Codex quota tracker for Windows. `AGENTS.md` describes actual commands for assistants working in the clone. `llms.txt` is an optional documentation index. None of these guarantees inclusion or ranking in an internet search or an AI answer.
+```powershell
+git clone https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget.git
+cd claude-codex-quota-widget
+pwsh -NoProfile -File ./install.ps1
+pwsh -NoProfile -File ./configure-claude.ps1
+```
 
+The legacy source helper previews by default. `-Apply` needs consent; `-ReplaceExisting` needs separate replacement consent. It references the retained clone and uses the PowerShell producer. Keep its backup path. Undo it with `configure-claude.ps1 -Restore -BackupPath <saved-path>` before `uninstall.ps1`. If no prior settings existed, remove only its added statusLine property, preserving later changes. These scripts are not required by the Windows executable installer.
+
+## Discovery
+
+The README, description and topics identify a free Claude Code usage monitor and Codex quota tracker for Windows. `AGENTS.md` contains actual commands; `llms.txt` indexes documentation. They help discoverability without guaranteeing search ranking or inclusion in an AI answer.
