@@ -23,10 +23,10 @@ public partial class App : Application, IDisposable
     private string? lastConnectionIssue;
     private bool directReadRequested;
     private TelemetryMonitor? telemetry;
-
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        if (PackagingSmoke.TryRun(this, e.Args)) { return; }
         instance = new SingleInstance();
         if (!instance.IsOwner) { Shutdown(); return; }
         log = new(Path.Combine(DefaultPaths.DataDirectory, "logs"), clock);
