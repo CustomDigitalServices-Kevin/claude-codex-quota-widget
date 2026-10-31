@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/QuotaWidget.App/QuotaWidget.App.csproj" />
+    <Project Path="src/QuotaWidget.Cli/QuotaWidget.Cli.csproj" />
+    <Project Path="src/QuotaWidget.Core/QuotaWidget.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/QuotaWidget.App.Tests/QuotaWidget.App.Tests.csproj" />
+    <Project Path="tests/QuotaWidget.Core.Tests/QuotaWidget.Core.Tests.csproj" />
+    <Project Path="tests/QuotaWidget.FakeCodex/QuotaWidget.FakeCodex.csproj" />
+  </Folder>
+</Solution>
