@@ -1,0 +1,46 @@
+{
+  "accountId": "constructed-account",
+  "ordinaryUsageAllowed": true,
+  "rateLimits": {
+    "limitId": "codex",
+    "primary": { "usedPercent": 12, "windowDurationMins": 300, "resetsAt": 1793361600 },
+    "secondary": { "usedPercent": 38, "windowDurationMins": 10080, "resetsAt": 1793774134 },
+    "credits": { "hasCredits": true, "unlimited": false, "balance": "12.5000" },
+    "planType": "pro",
+    "rateLimitReachedType": null,
+    "spendControlReached": false
+  },
+  "rateLimitsByLimitId": {
+    "codex": {
+      "limitId": "codex",
+      "primary": { "usedPercent": 12, "windowDurationMins": 300, "resetsAt": 1793361600 },
+      "secondary": { "usedPercent": 38, "windowDurationMins": 10080, "resetsAt": 1793774134 },
+      "credits": { "hasCredits": true, "unlimited": false, "balance": "12.5000" },
+      "planType": "pro",
+      "rateLimitReachedType": null,
+      "spendControlReached": false
+    },
+    "code-review": {
+      "limitId": "code-review",
+      "primary": { "usedPercent": 8, "windowDurationMins": 10080, "resetsAt": null },
+      "secondary": null,
+      "credits": { "hasCredits": true, "unlimited": true, "balance": null },
+      "rateLimitReachedType": null,
+      "spendControlReached": null
+    }
+  },
+  "rateLimitResetCredits": {
+    "availableCount": 2,
+    "credits": [
+      {
+        "id": "constructed-reset-credit",
+        "resetType": "codexRateLimits",
+        "status": "available",
+        "grantedAt": 1793354400,
+        "expiresAt": null,
+        "title": "Remise disponible",
+        "description": null
+      }
+    ]
+  }
+}
