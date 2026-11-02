@@ -4,7 +4,7 @@ Use the person's own Windows session and provider accounts. No shared account, p
 
 ## Install the Windows release
 
-Prefer the [latest GitHub release](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest) and its `QuotaWidget-Setup-1.0.1-win-x64.exe`. Windows 11 x64 is the supported package target. The package includes .NET: no SDK, compilation, Git, separate .NET runtime or PowerShell 7 is required.
+Prefer the [latest GitHub release](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest) and its `QuotaWidget-Setup-1.0.2-win-x64.exe`. Windows 11 x64 is the supported package target. The package includes .NET: no SDK, compilation, Git, separate .NET runtime or PowerShell 7 is required.
 
 Run as the ordinary Windows user. The wizard installs into `%LOCALAPPDATA%\Programs\QuotaWidget`, creates a Start menu shortcut and offers startup at sign-in. Claude integration is unchecked by default. Explain its effect before selecting it. Provider applications and personal sign-in remain separate.
 
