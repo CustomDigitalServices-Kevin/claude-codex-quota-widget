@@ -262,6 +262,14 @@ public partial class App : Application, IDisposable
         Shutdown();
     }
 
+    protected override void OnSessionEnding(SessionEndingCancelEventArgs e)
+    {
+        base.OnSessionEnding(e);
+        // At log off or shutdown WPF calls Shutdown, which closes every window and still raises Closing.
+        // Without this, that close reads as the user hiding the card and the next session starts in the tray.
+        if (!e.Cancel && card is not null) { card.AllowClose = true; }
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
         Dispose();
