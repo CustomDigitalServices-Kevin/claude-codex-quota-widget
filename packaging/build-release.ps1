@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 [CmdletBinding()]
 param(
-    [ValidatePattern('^\d+\.\d+\.\d+$')][string]$Version = '1.0.1',
+    [ValidatePattern('^\d+\.\d+\.\d+$')][string]$Version = '1.0.2',
     [ValidateSet('win-x64')][string]$Runtime = 'win-x64',
     [string]$NsisZipPath = $env:QUOTAWIDGET_NSIS_ZIP,
     [switch]$BuildTestInstallers,
