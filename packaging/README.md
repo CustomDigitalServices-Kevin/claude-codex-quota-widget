@@ -38,9 +38,9 @@ Build the production setup and isolated Claude-off, Claude-on and rollback test 
 ./packaging/build-release.ps1 -NsisZipPath C:\tools\nsis-3.13.zip `
   -BuildTestInstallers -TestSuffix ci -SkipSourceArchive
 ./packaging/test-installer.ps1 `
-  -OffSetup ./artifacts/build-1.0.1/test-installers/QuotaWidget-v1.0.1-test-ci-off-setup.exe `
-  -OnSetup ./artifacts/build-1.0.1/test-installers/QuotaWidget-v1.0.1-test-ci-on-setup.exe `
-  -RollbackSetup ./artifacts/build-1.0.1/test-installers/QuotaWidget-v1.0.1-test-ci-rollback-setup.exe `
+  -OffSetup ./artifacts/build-1.0.2/test-installers/QuotaWidget-v1.0.2-test-ci-off-setup.exe `
+  -OnSetup ./artifacts/build-1.0.2/test-installers/QuotaWidget-v1.0.2-test-ci-on-setup.exe `
+  -RollbackSetup ./artifacts/build-1.0.2/test-installers/QuotaWidget-v1.0.2-test-ci-rollback-setup.exe `
   -LegacyPayload C:\build\quota-widget-v1.0.0-framework-dependent `
   -TestSuffix ci
 ```
