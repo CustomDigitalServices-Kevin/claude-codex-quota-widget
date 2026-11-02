@@ -20,7 +20,7 @@ The UI currently uses French labels. Hardware is sampled about every four second
 
 ## Install on Windows
 
-Download **QuotaWidget-Setup-1.0.1-win-x64.exe** from the [latest GitHub release](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest). Run it as your ordinary Windows user, choose the options and install. No compilation, .NET SDK, separate .NET runtime, Git or PowerShell 7 installation is needed. Windows 11 x64 is the supported package target.
+Download **QuotaWidget-Setup-1.0.2-win-x64.exe** from the [latest GitHub release](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest). Run it as your ordinary Windows user, choose the options and install. No compilation, .NET SDK, separate .NET runtime, Git or PowerShell 7 installation is needed. Windows 11 x64 is the supported package target.
 
 The installer includes the .NET runtime, creates a Start menu shortcut and offers startup at sign-in. **Connect Claude Code is off by default.** Enable it only if you want the widget to configure your Claude status line. An existing status line is preserved. You still install and authenticate the provider tools separately with your own accounts.
 
