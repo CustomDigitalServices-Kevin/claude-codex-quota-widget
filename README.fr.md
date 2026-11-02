@@ -6,7 +6,7 @@ Widget Windows open source sous licence MIT : quotas Claude Code et ChatGPT Code
 
 ## Installation
 
-Télécharger **QuotaWidget-Setup-1.0.1-win-x64.exe** dans la [dernière release GitHub](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest), puis suivre l’assistant. Le runtime .NET est inclus : aucune compilation ni installation du SDK .NET, de Git ou de PowerShell 7 n’est nécessaire. Version prévue pour Windows 11 x64, installation pour l’utilisateur courant.
+Télécharger **QuotaWidget-Setup-1.0.2-win-x64.exe** dans la [dernière release GitHub](https://github.com/CustomDigitalServices-Kevin/claude-codex-quota-widget/releases/latest), puis suivre l’assistant. Le runtime .NET est inclus : aucune compilation ni installation du SDK .NET, de Git ou de PowerShell 7 n’est nécessaire. Version prévue pour Windows 11 x64, installation pour l’utilisateur courant.
 
 L’assistant propose le démarrage à la connexion Windows. La connexion à Claude est facultative et décochée par défaut. Une barre d’état existante est conservée. L’intégration utilise Windows PowerShell 5.1, fourni avec Windows, uniquement pour lancer le producteur natif.
 
